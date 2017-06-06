@@ -1,4 +1,5 @@
 require './lib/pantry'
+require './lib/recipe'
 require 'minitest/autorun'
 require 'minitest/pride'
 
@@ -42,6 +43,30 @@ class PantryTest < Minitest::Test
     pantry.restock("Cheese", 20)
 
     assert_equal 30, pantry.stock_check("Cheese")
+  end
+
+  def test_pantry_stocks_a_recipe
+    recipe = Recipe.new("Spicey Cheese Pizza")
+    recipe.add_ingredient("Cayenne Pepper", 0.025)
+    recipe.add_ingredient("Cheese", 75)
+    recipe.add_ingredient("Flour", 500)
+
+    pantry = Pantry.new
+    pantry.stock_recipe(recipe)
+    stock = {"Cayenne Pepper" => 0.025,
+             "Cheese"         => 75,
+             "Flour"          => 500
+            }
+    assert_equal stock, pantry.stock
+  end
+
+  def test_convert_units_converts_milli_units_if_quantity_is_under_1
+    recipe = Recipe.new("Spicey Cheese Pizza")
+    recipe.add_ingredient("Cayenne Pepper", 0.025)
+
+    pantry = Pantry.new
+    converted = {"Cayenne Pepper" => {quantity: 25, units: "Milli-Units"}}
+    assert_equal (converted), pantry.convert_units(recipe)
   end
 
 end

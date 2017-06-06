@@ -15,7 +15,13 @@ class Pantry
       @stock[item] += quantity
     else
       @stock[item] = quantity
-    end 
+    end
+  end
+
+  def stock_recipe(recipe)
+    recipe.ingredients.each do |ingredient, quantity|
+      restock(ingredient, quantity)
+    end
   end
 
 end

@@ -24,4 +24,29 @@ class Pantry
     end
   end
 
+  def convert_units(recipe)
+    recipe.ingredients.reduce({}) do |result, ingredient_info|
+      converted_info = convert_quantity(ingredient_info[-1])
+      result[ingredient_info[0]] = converted_info
+      result
+    end
+  end
+
+  def convert_quantity(quantity)
+    if quantity < 1
+      {quantity: quantity * 1000,
+       units:    "Milli-Units"
+      }
+    elsif quantity > 100
+      {quantity: quantity / 100,
+       units:    "Centi-Units"
+      }
+    else
+      {quantity: quantity,
+       units:    "Universal Units"
+      }
+    end
+
+  end
+
 end

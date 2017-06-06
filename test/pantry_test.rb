@@ -2,7 +2,7 @@ require './lib/pantry'
 require './lib/recipe'
 require 'minitest/autorun'
 require 'minitest/pride'
-
+require 'pry'
 class PantryTest < Minitest::Test
 
   def test_pantry_exists
@@ -66,7 +66,29 @@ class PantryTest < Minitest::Test
 
     pantry = Pantry.new
     converted = {"Cayenne Pepper" => {quantity: 25, units: "Milli-Units"}}
+
     assert_equal (converted), pantry.convert_units(recipe)
   end
+
+  def test_converts_units_converts_centi_untis_if_quanitty_is_over_100
+    recipe = Recipe.new("Spicey Cheese Pizza")
+    recipe.add_ingredient("Flour", 500)
+
+    pantry = Pantry.new
+    converted = {"Flour" => {quantity: 5, units: "Centi-Units"}}
+
+    assert_equal converted, pantry.convert_units(recipe)
+  end
+
+  def test_convert_units_does_not_convert_if_between_1_and_100
+    recipe = Recipe.new("Spicey Cheese Pizza")
+    recipe.add_ingredient("Cheese", 75)
+
+    pantry = Pantry.new
+    converted = {"Cheese" => {quantity: 75, units: "Universal Units"}}
+
+    assert_equal converted, pantry.convert_units(recipe)
+  end
+
 
 end

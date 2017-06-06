@@ -29,26 +29,32 @@ class Pantry
   def convert_units(recipe)
     recipe.ingredients.reduce({}) do |result, ingredient_info|
       converted_info = convert_quantity(ingredient_info[-1])
+      result[ingredient_info[0]] = [] unless result[ingredient_info[0]]
       result[ingredient_info[0]] = converted_info
       result
     end
   end
 
-  def convert_quantity(quantity)
+  # def convert_quantity_one_ingredient(quantity, result)
+  #   convert_quantity(quantity, [])
+  # end
+
+  def convert_quantity(quantity, result = [])
+    return result if quantity == 0
     if quantity < 1
-      format_converted_information(quantity * 1000.00, "Milli-Units")
+      result << format_converted_information((quantity * 1000).round, "Milli-Units")
     elsif quantity > 100
-      format_converted_information(quantity / 100.00, "Centi-Units")
+      result << format_converted_information((quantity - (quantity % 100)) / 100.00, "Centi-Units")
+      convert_quantity(quantity % 100, result)
     else
-      format_converted_information(quantity, "Universal Units")
+      result << format_converted_information(quantity - (quantity % 1), "Universal Units")
+      convert_quantity(quantity % 1, result)
     end
   end
 
+
   def format_converted_information(converted, unit)
-    formatted = {quantity: 0, units: ""}
-    formatted[:quantity] = converted
-    formatted[:units] = unit
-    formatted
+     {quantity: converted, units: unit}
   end
 
   def add_to_shopping_list(recipe)
@@ -63,6 +69,14 @@ class Pantry
     else
       @shopping_list[ingredient] = quantity
     end
+  end
+
+  def print_shopping_list
+    to_print = @shopping_list.reduce("") do |result, item_info|
+      result += "* #{item_info[0]}: #{item_info[-1]}\n"
+      result
+    end
+    p to_print
   end
 
 end

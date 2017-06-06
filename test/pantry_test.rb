@@ -204,4 +204,16 @@ class PantryTest < Minitest::Test
     assert_equal list, pantry.shopping_list
   end
 
+  def test_add_single_repeat_item_to_shopping_list
+    pantry = Pantry.new
+    assert pantry.shopping_list.empty?
+
+    pantry.add_ingredient_to_list("Chocolate Chips", 60)
+    pantry.add_ingredient_to_list("Chocolate Chips", 60)
+
+    list = {"Chocolate Chips" => 120}
+
+    assert_equal list, pantry.shopping_list
+  end
+
 end

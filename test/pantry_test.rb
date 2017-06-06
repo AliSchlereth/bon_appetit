@@ -118,7 +118,69 @@ class PantryTest < Minitest::Test
     assert_equal converted, pantry.convert_units(recipe)
   end
 
-  
+  def test_pantry_has_a_shopping_list
+    pantry = Pantry.new
 
+    assert_equal ({}), pantry.shopping_list
+  end
+
+  def test_add_to_shopping_list_adds_from_recipe
+    recipe = Recipe.new("Thom Pizza")
+    recipe.add_ingredient("Oregano", 0.035)
+
+    pantry = Pantry.new
+    assert pantry.shopping_list.empty?
+
+    pantry.add_to_shopping_list(recipe)
+
+    refute pantry.shopping_list.empty?
+
+  end
+
+  def test_add_to_shopping_list_adds_each_ingredient
+    recipe = Recipe.new("Thom Pizza")
+    recipe.add_ingredient("Oregano", 0.035)
+    recipe.add_ingredient("Teese", 35)
+    recipe.add_ingredient("GF Flour", 550)
+
+    pantry = Pantry.new
+    pantry.add_to_shopping_list(recipe)
+    shopping_list = { "Oregano" => 0.035,
+                      "Teese"   => 35,
+                      "GF Flour"=> 550
+                    }
+    assert_equal shopping_list, pantry.shopping_list
+  end
+
+  def test_add_to_shopping_list_can_add_multiple_recipes
+    recipe_1 = Recipe.new("Thom Pizza")
+    recipe_1.add_ingredient("Cayenne Pepper", 0.030)
+    recipe_1.add_ingredient("Teese", 35)
+    recipe_1.add_ingredient("GF Flour", 550)
+
+    recipe_2 = Recipe.new("Spicey Cheese Pizza")
+    recipe_2.add_ingredient("Cayenne Pepper", 0.020)
+    recipe_2.add_ingredient("Cheese", 75)
+    recipe_2.add_ingredient("Flour", 500)
+
+    pantry = Pantry.new
+    pantry.add_to_shopping_list(recipe_1)
+    first_list_check = { "Cayenne Pepper" => 0.030,
+                          "Teese"   => 35,
+                          "GF Flour"=> 550
+                        }
+
+    assert_equal first_list_check, pantry.shopping_list
+
+    pantry.add_to_shopping_list(recipe_2)
+    second_list_check = { "Cayenne Pepper" => 0.050,
+                          "Teese"   => 35,
+                          "GF Flour"=> 550,
+                          "Cheese"  => 75,
+                          "Flour"   => 500
+                        }
+
+    assert_equal second_list_check, pantry.shopping_list
+  end
 
 end

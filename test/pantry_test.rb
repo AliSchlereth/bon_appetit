@@ -254,8 +254,24 @@ class PantryTest < Minitest::Test
                 }
 
     pantry = Pantry.new
-    assert_equal converted, pantry.convert_units(recipe)
 
+    assert_equal converted, pantry.convert_units(recipe)
+  end
+
+  def test_can_add_all_sorts_of_unevenly_divisible_sets
+    recipe = Recipe.new("Spicy Cheese Pizza")
+    recipe.add_ingredient("Cayenne Pepper", 1.025)
+    recipe.add_ingredient("Cheese", 75)
+    recipe.add_ingredient("Flour", 550)
+
+    pantry = Pantry.new
+    converted = { "Cayenne Pepper" => [{quantity: 1, units: "Universal Units"},
+                                       {quantity: 25, units: "Milli-Units"}],
+                  "Cheese"         => [{quantity: 75, units: "Universal Units"}],
+                  "Flour"          => [{quantity: 5, units: "Centi-Units"},
+                                       {quantity: 50, units: "Universal Units"}]}
+
+    assert_equal converted, pantry.convert_units(recipe)
   end
 
 end

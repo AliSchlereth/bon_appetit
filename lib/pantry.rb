@@ -35,10 +35,6 @@ class Pantry
     end
   end
 
-  # def convert_quantity_one_ingredient(quantity, result)
-  #   convert_quantity(quantity, [])
-  # end
-
   def convert_quantity(quantity, result = [])
     return result if quantity == 0
     if quantity < 1

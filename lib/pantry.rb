@@ -53,12 +53,16 @@ class Pantry
 
   def add_to_shopping_list(recipe)
     recipe.ingredients.each do |ingredient, quantity|
-      
-      if @shopping_list[ingredient]
-        @shopping_list[ingredient] += quantity
-      else
-        @shopping_list[ingredient] = quantity
-      end
+      add_ingredient_to_list(ingredient, quantity)
     end
   end
+
+  def add_ingredient_to_list(ingredient, quantity)
+    if @shopping_list[ingredient]
+      @shopping_list[ingredient] += quantity
+    else
+      @shopping_list[ingredient] = quantity
+    end
+  end
+
 end

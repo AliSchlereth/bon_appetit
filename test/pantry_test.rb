@@ -183,4 +183,25 @@ class PantryTest < Minitest::Test
     assert_equal second_list_check, pantry.shopping_list
   end
 
+  def test_format_converted_information_returns_a_converted_hash
+    pantry = Pantry.new
+    converted = { quantity: 25,
+                  units:    "Units"
+                }
+
+    assert_equal converted, pantry.format_converted_information(25, "Units")
+  end
+
+  def test_add_single_new_ingredient_to_list
+    pantry = Pantry.new
+    assert pantry.shopping_list.empty?
+
+    pantry.add_ingredient_to_list("Chocolate Chips", 60)
+
+    refute pantry.shopping_list.empty?
+    list = {"Chocolate Chips" => 60}
+
+    assert_equal list, pantry.shopping_list
+  end
+
 end

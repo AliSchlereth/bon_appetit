@@ -34,11 +34,11 @@ class Pantry
 
   def convert_quantity(quantity)
     if quantity < 1
-      {quantity: quantity * 1000,
+      {quantity: quantity * 1000.00,
        units:    "Milli-Units"
       }
     elsif quantity > 100
-      {quantity: quantity / 100,
+      {quantity: quantity / 100.00,
        units:    "Centi-Units"
       }
     else

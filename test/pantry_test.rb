@@ -90,5 +90,33 @@ class PantryTest < Minitest::Test
     assert_equal converted, pantry.convert_units(recipe)
   end
 
+  def test_convert_units_converts_each_unit_type_dynamically
+    recipe = Recipe.new("Spicey Cheese Pizza")
+    recipe.add_ingredient("Cayenne Pepper", 0.025)
+    recipe.add_ingredient("Cheese", 75)
+    recipe.add_ingredient("Flour", 500)
+
+    pantry = Pantry.new
+    converted = {"Cayenne Pepper" => {quantity: 25, units: "Milli-Units"},
+                 "Cheese"         => {quantity: 75, units: "Universal Units"},
+                 "Flour"          => {quantity: 5, units: "Centi-Units"}
+               }
+    assert_equal converted, pantry.convert_units(recipe)
+  end
+
+  def test_convert_units_converts_each_unit_type_dynamically
+    recipe = Recipe.new("Thom Pizza")
+    recipe.add_ingredient("Oregano", 0.035)
+    recipe.add_ingredient("Teese", 35)
+    recipe.add_ingredient("GF Flour", 550)
+
+    pantry = Pantry.new
+    converted = {"Oregano"  => {quantity: 35, units: "Milli-Units"},
+                 "Teese"    => {quantity: 35, units: "Universal Units"},
+                 "GF Flour" => {quantity: 5.5, units: "Centi-Units"}
+               }
+    assert_equal converted, pantry.convert_units(recipe)
+  end
+
 
 end

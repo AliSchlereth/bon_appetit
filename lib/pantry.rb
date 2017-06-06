@@ -34,19 +34,20 @@ class Pantry
 
   def convert_quantity(quantity)
     if quantity < 1
-      {quantity: quantity * 1000.00,
-       units:    "Milli-Units"
-      }
+      format_converted_information(quantity * 1000.00, "Milli-Units")
     elsif quantity > 100
-      {quantity: quantity / 100.00,
-       units:    "Centi-Units"
-      }
+      format_converted_information(quantity / 100.00, "Centi-Units")
     else
-      {quantity: quantity,
-       units:    "Universal Units"
-      }
+      format_converted_information(quantity, "Universal Units")
     end
-
   end
 
+  def format_converted_information(converted, unit)
+    formatted = {quantity: 0, units: ""}
+    formatted[:quantity] = converted
+    formatted[:units] = unit
+    formatted
+  end
+
+  
 end

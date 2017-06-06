@@ -28,9 +28,8 @@ class Pantry
 
   def convert_units(recipe)
     recipe.ingredients.reduce({}) do |result, ingredient_info|
-      converted_info = convert_quantity(ingredient_info[-1])
       result[ingredient_info[0]] = [] unless result[ingredient_info[0]]
-      result[ingredient_info[0]] = converted_info
+      result[ingredient_info[0]] = convert_quantity(ingredient_info[-1])
       result
     end
   end
@@ -38,18 +37,29 @@ class Pantry
   def convert_quantity(quantity, result = [])
     return result if quantity == 0
     if quantity < 1
-      result << format_converted_information((quantity * 1000).round, "Milli-Units")
+      result << format_converted(convert_decimal(quantity), "Milli-Units")
     elsif quantity > 100
-      result << format_converted_information((quantity - (quantity % 100)) / 100.00, "Centi-Units")
+      result << format_converted(convert_hundreds(quantity), "Centi-Units")
       convert_quantity(quantity % 100, result)
     else
-      result << format_converted_information(quantity - (quantity % 1), "Universal Units")
+      result << format_converted(convert_floats(quantity), "Universal Units")
       convert_quantity(quantity % 1, result)
     end
   end
 
+  def convert_decimal(quantity)
+    (quantity * 1000).round
+  end
 
-  def format_converted_information(converted, unit)
+  def convert_hundreds(quantity)
+    (quantity - (quantity % 100)) / 100.00
+  end
+
+  def convert_floats(quantity)
+    quantity - (quantity % 1)
+  end
+
+  def format_converted(converted, unit)
      {quantity: converted, units: unit}
   end
 

@@ -115,7 +115,7 @@ class PantryTest < Minitest::Test
                  "Teese"    => [{quantity: 35, units: "Universal Units"}],
                  "GF Flour" => [{quantity: 6, units: "Centi-Units"}]
                }
-               
+
     assert_equal converted, pantry.convert_units(recipe)
   end
 
@@ -184,13 +184,13 @@ class PantryTest < Minitest::Test
     assert_equal second_list_check, pantry.shopping_list
   end
 
-  def test_format_converted_information_returns_a_converted_hash
+  def test_format_converted_returns_a_converted_hash
     pantry = Pantry.new
     converted = { quantity: 25,
                   units:    "Units"
                 }
 
-    assert_equal converted, pantry.format_converted_information(25, "Units")
+    assert_equal converted, pantry.format_converted(25, "Units")
   end
 
   def test_add_single_new_ingredient_to_list
